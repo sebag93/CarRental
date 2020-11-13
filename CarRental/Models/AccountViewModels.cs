@@ -2,6 +2,23 @@
 
 namespace CarRental.Models
 {
+    #region Logowanie
+    public class LoginViewModel
+    {
+        [Required]
+        [Display(Name = "Adres email")]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Hasło")]
+        public string Password { get; set; }
+
+        [Display(Name = "Zapamiętać Cię?")]
+        public bool RememberMe { get; set; }
+    }
+    #endregion
 
     #region Rejestracja
     public class RegisterViewModels
