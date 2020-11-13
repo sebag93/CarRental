@@ -77,4 +77,25 @@ namespace CarRental.Models
         public string PhoneNumber { get; set; }
     }
     #endregion
+
+    #region Zmiana hasła
+    public class ChangePasswordViewModel
+    {
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Aktualne hasło")]
+        public string CurrentPassword { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Nowe hasło")]
+        [MinLength(6, ErrorMessage = "Hasło musi zawierać co najmniej 6 znaków")]
+        public string NewPassword { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Potwierdź nowe hasło")]
+        [Compare("NewPassword", ErrorMessage = "Nowe hasło i jego potwierdzenie są niezgodne.")]
+        public string ConfirmNewPassword { get; set; }
+    }
+    #endregion
 }
