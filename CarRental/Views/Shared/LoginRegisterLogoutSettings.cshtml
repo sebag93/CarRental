@@ -10,13 +10,13 @@
             <li>
                 <a href="javascript:document.getElementById('logoutForm').submit()">Wyloguj</a>
             </li>
-        </ul>
+        </ul> 
     }
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Zarejestruj", "Register", "Account")</li>
         <li>@Html.ActionLink("Zaloguj", "Login", "Account")</li>
+        <li>@Html.ActionLink("Zarejestruj", "Register", "Account")</li>
     </ul>
 }

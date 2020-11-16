@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using CarRental.Models;
+using CarRental.Services.Business;
+using System;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using CarRental.Models;
 
 namespace CarRental.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        readonly SecurityService securityService = new SecurityService();
+
         // GET: Account/Login
         [AllowAnonymous]
         public ActionResult Login()
@@ -22,39 +23,29 @@ namespace CarRental.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginViewModel dane, string ReturnUrl = "")
+        public ActionResult Login(LoginViewModel user)
         {
-            string message = "";
-            using (CarRentalEntities db = new CarRentalEntities())
+            string message;
+            bool success = securityService.Authenticate(user);
+            if (success)
             {
-                var v = db.Users.Where(x => x.email == dane.Email && x.password == dane.Password).FirstOrDefault();
-                if (v != null)
+                int timeout = user.RememberMe ? 60 : 20;
+                FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(user.Email, user.RememberMe, timeout);
+                string encrypted = FormsAuthentication.Encrypt(ticket);
+                HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted)
                 {
-                    int timeout = dane.RememberMe ? 525600 : 20; //525600 minut to 1 rok
-                    var ticket = new FormsAuthenticationTicket(dane.Email, dane.RememberMe, timeout);
-                    string encrypted = FormsAuthentication.Encrypt(ticket);
-                    var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted)
-                    {
-                        Expires = DateTime.Now.AddMinutes(timeout),
-                        HttpOnly = true
-                    };
-                    Response.Cookies.Add(cookie);
-                    if (Url.IsLocalUrl(ReturnUrl))
-                    {
-                        //return RedirectToAction(ReturnUrl);
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                }
-                else
-                {
-                    message = "Wprowadzono niepoprawne dane";
-                }
+                    Expires = ticket.Expiration,
+                    HttpOnly = true
+                };
+                HttpContext.Response.Cookies.Add(cookie);
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                message = "Wprowadzono niepoprawne dane";
             }
             ViewBag.Message = message;
+            ViewBag.Status = success;
             return View();
         }
 
@@ -71,6 +62,52 @@ namespace CarRental.Controllers
         public ActionResult Register()
         {
             return View();
+        }
+
+        // POST: Account/Register
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register(RegisterViewModels user)
+        {
+            bool Status = false;
+            string message = "";
+            if (ModelState.IsValid)
+            {
+                if (securityService.EmailExist(user.Email))
+                {
+                    message = "Podany email został już zarejestrowany";
+                }
+                else {
+                    using (CarRentalEntities db = new CarRentalEntities())
+                    {
+                        var newuser = new Users()
+                        {
+                            id = 1,
+                            email = user.Email,
+                            password = user.Password,
+                            firstname = user.FirstName,
+                            lastname = user.LastName,
+                            city = user.City,
+                            address = user.Address,
+                            number = user.Number,
+                            zipcode = user.ZipCode,
+                            phonenumber = user.PhoneNumber
+                        };
+                        db.Users.Add(newuser);
+                        db.SaveChanges();
+                        message = "Rejestracja zakończona pomyślnie. Możesz zalogować sie na swoje konto.";
+                        Status = true;
+                    } 
+                }
+            }
+            else
+            {
+                message = "Nieprawidłowe żądanie";
+            }
+            ViewBag.Message = message;
+            ViewBag.Status = Status;
+            return View(user);
         }
 
         // GET: Account/Settings

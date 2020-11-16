@@ -8,6 +8,18 @@
 
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
+
+    if (ViewBag.Status != null && Convert.ToBoolean(ViewBag.Status))
+    {
+        if (ViewBag.Message != null)
+        {
+            <div class="alert alert-success">
+                <strong>Sukces!</strong> @ViewBag.Message
+            </div>
+        }
+    }
+    else { 
+    @Html.AntiForgeryToken()
     <hr />
     <h4>Dane do logowania</h4>
     <div class="form-group">
@@ -88,8 +100,18 @@
             <input type="submit" class="btn btn-default" value="Zarejestruj" />
         </div>
     </div>
+    if (ViewBag.Message != null)
+    {
+        <div class="alert alert-danger">
+            <strong>Błąd!</strong>@ViewBag.Message
+        </div>
+    }
+        }
 }
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 }
