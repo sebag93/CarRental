@@ -1,5 +1,4 @@
 ﻿using CarRental.Models;
-using System;
 using System.Linq;
 
 namespace CarRental.Services.Data

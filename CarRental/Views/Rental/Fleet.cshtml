@@ -1,7 +1,76 @@
-﻿
+﻿@model CarRental.Models.CarViewModel
 @{
     ViewBag.Title = "Fleet";
+    var i = 0;
 }
+<h2>Flota</h2>
+@foreach (var item in ViewBag.Cars)
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div>
+                @{
+                    i++;
+                    string sciezka = "/Files/" + i + ".jpg";
 
-<h2>Fleet</h2>
+                }
+                <img src="@sciezka" width="500" />
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-horizontal">
+                <h2><b>@item.CarName</b></h2>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.FuelType, new { @class = "col-md-5 control-label" })
+                    <div class="col-md-7">
+                        <div class="form-control">
+                            @item.FuelType
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Transmission, new { @class = "col-md-5 control-label" })
+                    <div class="col-md-7">
+                        <div class="form-control">
+                            @item.Transmission
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConsumptionCombined, new { @class = "col-md-5 control-label" })
+                    <div class="col-md-7">
+                        <div class="form-control">
+                            @item.ConsumptionCombined
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.AirConditioning, new { @class = "col-md-5 control-label" })
+                    <div class="col-md-7">
+                        <div class="form-control">
+                            @item.AirConditioning
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.DriveType, new { @class = "col-md-5 control-label" })
+                    <div class="col-md-7">
+                        <div class="form-control">
+                            @item.DriveType
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.LuggageCapacity, new { @class = "col-md-5 control-label" })
+                    <div class="col-md-7">
+                        <div class="form-control">
+                            @item.LuggageCapacity
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+}
 
