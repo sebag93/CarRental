@@ -1,6 +1,7 @@
 ﻿using CarRental.Models;
 using CarRental.Services.Business;
 using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -111,17 +112,43 @@ namespace CarRental.Controllers
         }
 
         // GET: Account/Settings
-        [AllowAnonymous]
         public ActionResult Settings()
         {
             return View();
         }
 
         // GET: Account/ChangePassword
-        [AllowAnonymous]
         public ActionResult ChangePassword()
         {
             return View();
+        }
+
+        // POST: Account/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePasswordViewModel user)
+        {
+            bool Status = false;
+            string message = "";
+            string email = User.Identity.Name;
+            CarRentalEntities db = new CarRentalEntities();
+            Users newPassword = db.Users.SingleOrDefault(x => x.email == email && x.password == user.CurrentPassword);
+            if (newPassword != null)
+            {
+                newPassword.password = user.NewPassword;
+                db.SaveChanges();
+                message = "Hasło zmienione pomyślnie.";
+                Status = true;
+            }
+            else
+            {
+                message = "Wprowadzone aktualne hasło jest nieprawidłowe.";
+                Status = false;
+            }
+
+            ViewBag.Message = message;
+            ViewBag.Status = Status;
+            return View(user);
         }
     }
 }
