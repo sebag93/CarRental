@@ -6,7 +6,7 @@
 
 <h3>Logowanie</h3>
 
-@using (Html.BeginForm(new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
     <hr />
