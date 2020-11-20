@@ -84,7 +84,6 @@ namespace CarRental.Controllers
                     {
                         var newuser = new Users()
                         {
-                            id = 1,
                             email = user.Email,
                             password = user.Password,
                             firstname = user.FirstName,
@@ -149,6 +148,26 @@ namespace CarRental.Controllers
             ViewBag.Message = message;
             ViewBag.Status = Status;
             return View(user);
+        }
+
+        // GET: Account/DeleteAccount
+        public ActionResult DeleteAccount()
+        {
+            return View();
+        }
+
+        // POST: Account/DeleteAccount
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteAccount(string email)
+        {
+            email = User.Identity.Name;
+            CarRentalEntities db = new CarRentalEntities();
+            Users toDelete = db.Users.SingleOrDefault(x => x.email == email);
+            db.Users.Remove(toDelete);
+            db.SaveChanges();
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login", "Account");
         }
     }
 }

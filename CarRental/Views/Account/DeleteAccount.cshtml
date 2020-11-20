@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "DeleteAccount";
+}
+
+<h2>Usuwanie konta</h2>
+<hr />
+<h3>Czy na pewno chcesz usunąć swoje konto? (Zostaniesz wylogowany, a Twoje wszystkie dane zostaną nieodwracalnie usunięte.)</h3>
+
+@using (Html.BeginForm("DeleteAccount", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <h3>
+                <input type="submit" value="Tak, usuń moje konto." class="btn btn-danger" />
+                <b type="button" class="btn btn-default">
+                    @Html.ActionLink("Anuluj", "Settings")
+                </b>
+            </h3>
+        </div>
+    </div>
+}
