@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "DeleteAccount";
 }
 
@@ -13,10 +12,8 @@
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <h3>
-                <input type="submit" value="Tak, usuń moje konto." class="btn btn-danger" />
-                <b type="button" class="btn btn-default">
-                    @Html.ActionLink("Anuluj", "Settings")
-                </b>
+                <input type="submit" value="Tak, usuń moje konto." class="btn btn-danger btn-lg" />
+                @Html.ActionLink("Anuluj", "Settings", null, new { @class = "btn btn-default btn-lg" })
             </h3>
         </div>
     </div>
