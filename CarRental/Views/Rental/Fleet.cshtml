@@ -19,7 +19,14 @@
         </div>
         <div class="col-md-5">
             <div class="form-horizontal">
-                <h2><b>@item.CarName</b></h2>
+                <h2><b>
+    @item.CarName
+    @if (Request.IsAuthenticated)
+    {
+        @Html.ActionLink("ZAREZERWUJ", "Booking", "Rental", routeValues: null, htmlAttributes: new { })
+        ViewBag.Car = item;
+    }
+</b></h2>
                 <div class="form-group">
                     @Html.LabelFor(m => m.FuelType, new { @class = "col-md-5 control-label" })
                     <div class="col-md-7">

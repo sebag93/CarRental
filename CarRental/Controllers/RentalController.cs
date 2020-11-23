@@ -21,6 +21,12 @@ namespace CarRental.Controllers
             return View();
         }
 
+        // GET: Rental/Booking
+        public ActionResult Booking()
+        {
+            return View();
+        }
+
         private static List<CarViewModel> WczytywanieSamochodow(string v)
         {
             var zapytanie = System.IO.File.ReadAllLines(v)

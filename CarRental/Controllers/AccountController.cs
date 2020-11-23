@@ -131,10 +131,10 @@ namespace CarRental.Controllers
             string message = "";
             string email = User.Identity.Name;
             CarRentalEntities db = new CarRentalEntities();
-            Users newPassword = db.Users.SingleOrDefault(x => x.email == email && x.password == user.CurrentPassword);
-            if (newPassword != null)
+            Users userExists = db.Users.SingleOrDefault(x => x.email == email && x.password == user.CurrentPassword);
+            if (userExists != null)
             {
-                newPassword.password = user.NewPassword;
+                userExists.password = user.NewPassword;
                 db.SaveChanges();
                 message = "Hasło zmienione pomyślnie.";
                 Status = true;
