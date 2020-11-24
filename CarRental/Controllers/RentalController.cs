@@ -1,18 +1,12 @@
 ﻿using CarRental.Models;
 using System.Collections.Generic;
-using System.Web.Mvc;
 using System.Linq;
+using System.Web.Mvc;
 
 namespace CarRental.Controllers
 {
     public class RentalController : Controller
     {
-        // GET: Rental/Offer
-        public ActionResult Offer()
-        {
-            return View();
-        }
-
         // GET: Rental/Fleet
         public ActionResult Fleet()
         {
@@ -43,7 +37,6 @@ namespace CarRental.Controllers
                                         AirConditioning = kolumny[4],
                                         DriveType = kolumny[5],
                                         LuggageCapacity = kolumny[6]
-
                                     };
                                 });
 
