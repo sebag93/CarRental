@@ -7,15 +7,17 @@ namespace CarRental.Controllers
 {
     public class RentalController : Controller
     {
+        private readonly List<CarViewModel> samochody = WczytywanieSamochodow("C:/KURSY/CarRental/CarRental/Files/cars.csv");
+
         // GET: Rental/Fleet
         public ActionResult Fleet()
         {
-            var samochody = WczytywanieSamochodow("C:/KURSY/CarRental/CarRental/Files/cars.csv");
             ViewBag.Cars = samochody;
             return View();
         }
 
         // GET: Rental/Booking
+        [Authorize]
         public ActionResult Booking()
         {
             return View();
@@ -36,19 +38,12 @@ namespace CarRental.Controllers
                                         ConsumptionCombined = kolumny[3],
                                         AirConditioning = kolumny[4],
                                         DriveType = kolumny[5],
-                                        LuggageCapacity = kolumny[6]
+                                        LuggageCapacity = kolumny[6],
+                                        Photo = kolumny[7]
                                     };
                                 });
 
             return zapytanie.ToList();
         }
-
-        // GET: Rental/Car
-        //public ActionResult Car()
-        //{
-        //    return View();
-        //}
-
-
     }
 }

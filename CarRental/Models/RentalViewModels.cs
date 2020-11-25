@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CarRental.Models
 {
@@ -27,5 +23,7 @@ namespace CarRental.Models
 
         [Display(Name = "Pojemność bagażnika [l]")]
         public string LuggageCapacity { get; set; }
+
+        public string Photo { get; set; }
     }
 }

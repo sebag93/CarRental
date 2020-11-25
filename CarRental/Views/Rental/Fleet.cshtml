@@ -1,7 +1,6 @@
 ﻿@model CarRental.Models.CarViewModel
 @{
     ViewBag.Title = "Fleet";
-    var i = 0;
 }
 <h2>Flota</h2>
 @foreach (var item in ViewBag.Cars)
@@ -10,9 +9,7 @@
         <div class="col-md-6">
             <div>
                 @{
-                    i++;
-                    string sciezka = "/Files/" + i + ".jpg";
-
+                    string sciezka = "/Files/" + item.Photo + ".jpg";
                 }
                 <img src="@sciezka" width="500" />
             </div>
@@ -22,11 +19,6 @@
                 <h2>
                     <b>
                         @item.CarName
-                        @if (Request.IsAuthenticated)
-                        {
-                            @Html.ActionLink("ZAREZERWUJ", "Booking", "Rental", null, new { @class = "btn btn-primary btn-lg" })
-                            ViewBag.Car = item;
-                        }
                     </b>
                 </h2>
                 <div class="form-group">
