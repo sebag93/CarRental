@@ -26,5 +26,6 @@ namespace CarRental.Models
         }
     
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Booking> Booking { get; set; }
     }
 }

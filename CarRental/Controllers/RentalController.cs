@@ -5,11 +5,13 @@ using System.Web.Mvc;
 
 namespace CarRental.Controllers
 {
+    [Authorize]
     public class RentalController : Controller
     {
         private readonly List<CarViewModel> samochody = WczytywanieSamochodow("C:/KURSY/CarRental/CarRental/Files/cars.csv");
 
         // GET: Rental/Fleet
+        [AllowAnonymous]
         public ActionResult Fleet()
         {
             ViewBag.Cars = samochody;
@@ -17,10 +19,47 @@ namespace CarRental.Controllers
         }
 
         // GET: Rental/Booking
-        [Authorize]
         public ActionResult Booking()
         {
+            var carList = new List<string>();
+            foreach (var item in samochody)
+            {
+                carList.Add(item.CarName);
+            }
+            ViewBag.Cars = carList;
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Booking(BookingViewModel car)
+        {
+            bool Status = false;
+            string message = "";
+            using (CarRentalEntities db = new CarRentalEntities())
+            {
+                if (ModelState.IsValid)
+                {
+                    var bookingCar = new Booking()
+                    {
+                        StartDate = car.StartDate,
+                        EndTime = car.EndDate,
+                        CarName = car.CarName,
+                        Email = HttpContext.User.Identity.Name
+                    };
+                    db.Booking.Add(bookingCar);
+                    db.SaveChanges();
+                    message = "Rezerwacja zakończona pomyślnie. Dziękujemy za skorzystanie z naszej oferty. Historię rezerwacji możesz sprawdzić w panelu swojego konta użytkownika.";
+                    Status = true;
+                }
+                else
+                {
+                    message = "Nieprawidłowe żądanie";
+                    Status = false;
+                }
+            }
+            ViewBag.Message = message;
+            ViewBag.Status = Status;
+            return View(car);
         }
 
         private static List<CarViewModel> WczytywanieSamochodow(string v)

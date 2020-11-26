@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CarRental.Models
 {
@@ -25,5 +27,21 @@ namespace CarRental.Models
         public string LuggageCapacity { get; set; }
 
         public string Photo { get; set; }
+    }
+
+    public class BookingViewModel
+    {
+        [Display(Name = "Data odbioru")]
+        [DataType(DataType.DateTime)]
+        [Required]
+        public DateTime StartDate { get; set; }
+
+        [Display(Name = "Data zwrotu")]
+        [Required]
+        public DateTime EndDate { get; set; }
+
+        [Display(Name = "Wybierz samochoód")]
+        [Required]
+        public string CarName { get; set; }
     }
 }
