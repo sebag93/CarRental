@@ -1,4 +1,5 @@
 ﻿using CarRental.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -27,9 +28,10 @@ namespace CarRental.Controllers
                 carList.Add(item.CarName);
             }
             ViewBag.Cars = carList;
-            return View();
+            return View(new BookingViewModel { CarName = carList[0] });
         }
 
+        // POST: Rental/Booking
         [HttpPost]
         public ActionResult Booking(BookingViewModel car)
         {
@@ -37,25 +39,25 @@ namespace CarRental.Controllers
             string message = "";
             using (CarRentalEntities db = new CarRentalEntities())
             {
-                if (ModelState.IsValid)
-                {
-                    var bookingCar = new Booking()
+                    if (ModelState.IsValid)
                     {
-                        StartDate = car.StartDate,
-                        EndTime = car.EndDate,
-                        CarName = car.CarName,
-                        Email = HttpContext.User.Identity.Name
-                    };
-                    db.Booking.Add(bookingCar);
-                    db.SaveChanges();
-                    message = "Rezerwacja zakończona pomyślnie. Dziękujemy za skorzystanie z naszej oferty. Historię rezerwacji możesz sprawdzić w panelu swojego konta użytkownika.";
-                    Status = true;
-                }
-                else
-                {
-                    message = "Nieprawidłowe żądanie";
-                    Status = false;
-                }
+                        var bookingCar = new Booking()
+                        {
+                            StartDate = car.StartDate,
+                            EndDate = car.EndDate,
+                            CarName = car.CarName,
+                            Email = HttpContext.User.Identity.Name
+                        };
+                        db.Booking.Add(bookingCar);
+                        db.SaveChanges();
+                        message = "Rezerwacja zakończona pomyślnie. Dziękujemy za skorzystanie z naszej oferty. Historię rezerwacji możesz sprawdzić w panelu swojego konta użytkownika.";
+                        Status = true;
+                    }
+                    else
+                    {
+                        message = "Nieprawidłowe żądanie";
+                        Status = false;
+                    }
             }
             ViewBag.Message = message;
             ViewBag.Status = Status;

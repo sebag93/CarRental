@@ -1,0 +1,35 @@
+﻿@model CarRental.Models.BookingViewModel
+
+@{
+    ViewBag.Title = "Booking";
+}
+
+<h2>Twoje rezerwacje</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Nazwa samochodu")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </th>
+    </tr>
+
+    @foreach (var item in ViewBag.Booking)
+    {
+<tr>
+    <td>
+        @item.CarName
+    </td>
+    <td>
+        @item.StartDate.ToShortDateString()
+    </td>
+    <td>
+        @item.EndDate.ToShortDateString()
+</tr>}
+
+</table>

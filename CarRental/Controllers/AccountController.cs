@@ -168,5 +168,14 @@ namespace CarRental.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "Account");
         }
+
+        // GET: Account/Booking
+        public ActionResult Booking()
+        {
+            CarRentalEntities db = new CarRentalEntities();
+            var booking = db.Booking.Where(x => x.Email == User.Identity.Name).ToList();
+            ViewBag.Booking = booking;
+            return View();
+        }
     }
 }

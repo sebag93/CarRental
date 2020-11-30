@@ -257,6 +257,7 @@
     <Content Include="Views\Offer\ProtectionPackage.cshtml" />
     <Content Include="Views\Offer\Extras.cshtml" />
     <Content Include="Views\Offer\OfferPartial.cshtml" />
+    <Content Include="Views\Account\Booking.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

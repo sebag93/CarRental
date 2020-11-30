@@ -16,8 +16,8 @@ namespace CarRental.Models
     {
         public int Id { get; set; }
         public System.DateTime StartDate { get; set; }
-        public System.DateTime EndTime { get; set; }
         public string CarName { get; set; }
         public string Email { get; set; }
+        public System.DateTime EndDate { get; set; }
     }
 }

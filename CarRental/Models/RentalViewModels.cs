@@ -33,10 +33,13 @@ namespace CarRental.Models
     {
         [Display(Name = "Data odbioru")]
         [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Required]
         public DateTime StartDate { get; set; }
 
         [Display(Name = "Data zwrotu")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Required]
         public DateTime EndDate { get; set; }
 

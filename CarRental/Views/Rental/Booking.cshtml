@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Booking";
+    var dateNow = DateTime.Now.Year.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Day.ToString();
 }
 
 <h2>Rezerwacja pojazdu</h2>
@@ -23,21 +24,21 @@
         @Html.AntiForgeryToken()
         <hr />
         <div class="form-group">
-            @Html.LabelFor(m => m.StartDate, new { @class = "col-md-2 control-label" })
+            @Html.LabelFor(m => m.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="date" name="StartDate">
+                <input type="date" name="StartDate" value="@dateNow">
                 @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(m => m.EndDate, new { @class = "col-md-2 control-label" })
+            @Html.LabelFor(m => m.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="date" name="EndDate">
+                <input type="date" name="EndDate" value="@dateNow">
                 @Html.ValidationMessageFor(m => m.EndDate, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(m => m.CarName, new { @class = "col-md-2 control-label" })
+            @Html.LabelFor(m => m.CarName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownListFor(m => m.CarName, new SelectList(ViewBag.Cars), new { @class = "col-md-2 control-label" })
                 @Html.ValidationMessageFor(m => m.CarName, "", new { @class = "text-danger" })
