@@ -17,19 +17,35 @@
         <th>
             @Html.DisplayNameFor(model => model.EndDate)
         </th>
+        <th>
+            @Html.DisplayName("Status")
+        </th>
     </tr>
 
     @foreach (var item in ViewBag.Booking)
     {
 <tr>
-    <td>
+    <td class="col-md-3">
         @item.CarName
     </td>
-    <td>
+    <td class="col-md-3">
         @item.StartDate.ToShortDateString()
     </td>
-    <td>
+    <td class="col-md-3">
         @item.EndDate.ToShortDateString()
+    </td>
+    <td class="col-md-3">
+        @{ 
+            if (item.StartDate > DateTime.Now)
+            {
+                <b class="text-warning">OCZEKUJĄCE</b>
+            }
+            else
+            {
+                <b class="text-success">ZREALIZOWANE</b>
+            }
+        }
+    </td>
 </tr>}
 
 </table>

@@ -10,7 +10,10 @@ namespace CarRental.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        readonly SecurityService securityService = new SecurityService();
+        private readonly SecurityService securityService = new SecurityService();
+        private readonly CarRentalEntities db = new CarRentalEntities();
+        private string message;
+        private bool Status;
 
         // GET: Account/Login
         [AllowAnonymous]
@@ -25,7 +28,6 @@ namespace CarRental.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginViewModel user)
         {
-            string message;
             bool success = securityService.Authenticate(user);
             if (success)
             {
@@ -70,8 +72,6 @@ namespace CarRental.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterViewModels user)
         {
-            bool Status = false;
-            string message = "";
             if (ModelState.IsValid)
             {
                 if (securityService.EmailExist(user.Email))
@@ -79,30 +79,28 @@ namespace CarRental.Controllers
                     message = "Podany email został już zarejestrowany";
                 }
                 else {
-                    using (CarRentalEntities db = new CarRentalEntities())
+                    var newuser = new Users()
                     {
-                        var newuser = new Users()
-                        {
-                            email = user.Email,
-                            password = user.Password,
-                            firstname = user.FirstName,
-                            lastname = user.LastName,
-                            city = user.City,
-                            address = user.Address,
-                            number = user.Number,
-                            zipcode = user.ZipCode,
-                            phonenumber = user.PhoneNumber
-                        };
-                        db.Users.Add(newuser);
-                        db.SaveChanges();
-                        message = "Rejestracja zakończona pomyślnie. Możesz zalogować sie na swoje konto.";
-                        Status = true;
-                    } 
+                        email = user.Email,
+                        password = user.Password,
+                        firstname = user.FirstName,
+                        lastname = user.LastName,
+                        city = user.City,
+                        address = user.Address,
+                        number = user.Number,
+                        zipcode = user.ZipCode,
+                        phonenumber = user.PhoneNumber
+                    };
+                    db.Users.Add(newuser);
+                    db.SaveChanges();
+                    message = "Rejestracja zakończona pomyślnie. Możesz zalogować sie na swoje konto.";
+                    Status = true;
                 }
             }
             else
             {
                 message = "Nieprawidłowe żądanie";
+                Status = false;
             }
             ViewBag.Message = message;
             ViewBag.Status = Status;
@@ -126,10 +124,7 @@ namespace CarRental.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(ChangePasswordViewModel user)
         {
-            bool Status = false;
-            string message = "";
             string email = User.Identity.Name;
-            CarRentalEntities db = new CarRentalEntities();
             Users userExists = db.Users.SingleOrDefault(x => x.email == email && x.password == user.CurrentPassword);
             if (userExists != null)
             {
@@ -143,7 +138,6 @@ namespace CarRental.Controllers
                 message = "Wprowadzone aktualne hasło jest nieprawidłowe.";
                 Status = false;
             }
-
             ViewBag.Message = message;
             ViewBag.Status = Status;
             return View(user);
@@ -161,9 +155,10 @@ namespace CarRental.Controllers
         public ActionResult DeleteAccount(string email)
         {
             email = User.Identity.Name;
-            CarRentalEntities db = new CarRentalEntities();
             Users toDelete = db.Users.SingleOrDefault(x => x.email == email);
             db.Users.Remove(toDelete);
+            var booking = db.Booking.Where(x => x.Email == email);
+            db.Booking.RemoveRange(booking);
             db.SaveChanges();
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "Account");
@@ -172,7 +167,6 @@ namespace CarRental.Controllers
         // GET: Account/Booking
         public ActionResult Booking()
         {
-            CarRentalEntities db = new CarRentalEntities();
             var booking = db.Booking.Where(x => x.Email == User.Identity.Name).ToList();
             ViewBag.Booking = booking;
             return View();

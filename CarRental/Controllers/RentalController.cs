@@ -10,6 +10,8 @@ namespace CarRental.Controllers
     public class RentalController : Controller
     {
         private readonly List<CarViewModel> samochody = WczytywanieSamochodow("C:/KURSY/CarRental/CarRental/Files/cars.csv");
+        private bool Status;
+        private string message;
 
         // GET: Rental/Fleet
         [AllowAnonymous]
@@ -35,8 +37,6 @@ namespace CarRental.Controllers
         [HttpPost]
         public ActionResult Booking(BookingViewModel car)
         {
-            bool Status = false;
-            string message = "";
             using (CarRentalEntities db = new CarRentalEntities())
             {
                     if (ModelState.IsValid)
